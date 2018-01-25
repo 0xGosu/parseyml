@@ -1,0 +1,64 @@
+version: '3'
+services:
+
+  nodejs:
+    image: digitallyseamless/nodejs-bower-grunt
+    command: bash update_node_modules_and_bower_components.sh
+    volumes:
+      - .:/app
+    working_dir: /app
+
+  memcached:
+    image: memcached:1.4.32-alpine
+    command: memcached -m 64
+    networks:
+      - backend
+
+  mysqldb:
+    image: tranvietanh1991/mysql:5.7-utf8
+    build: weorder/mysql/
+    networks:
+      - backend
+    volumes:
+      - dbdata:/var/lib/mysql
+    environment:
+      MYSQL_DATABASE: weorder
+      MYSQL_ROOT_PASSWORD: dummy_password
+      MYSQL_USER: weorder
+      MYSQL_PASSWORD: dummy_password
+    ports:
+      - "3306:3306"
+
+  weorder:
+    image: registry.gitlab.com/tranvietanh1991/weorder:weoder-restapi-v1.2
+    build: .
+    command: bash runserver.sh
+    networks:
+      backend:
+        aliases: ['webapp']
+    volumes:
+      - .:/var/www/webapp
+    working_dir: /var/www/webapp
+    environment:
+      ROOT_LOG_LEVEL: INFO
+    ports:
+      - "8080:8000"
+
+  nginx:
+    image: registry.gitlab.com/tranvietanh1991/weorder:nginx-frontend-v1.2
+    build: weorder/nginx/
+    command: sh -c "nginx -c /var/www/webapp/weorder/nginx/nginx_docker.conf;"
+    networks:
+      - frontend
+      - backend
+    volumes:
+      - .:/var/www/webapp
+    ports:
+      - "8000:80"
+
+networks:
+  frontend:
+  backend:
+
+volumes:
+  dbdata:

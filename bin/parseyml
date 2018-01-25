@@ -1,0 +1,19 @@
+#!/usr/bin/python
+# -*- coding: utf-8 -*-
+#
+#  parseyml
+#
+#
+#  Created by TVA on 1/25/18.
+#  Copyright (c) 2018 parseyml. All rights reserved.
+
+import sys
+import os
+from parseyml import main
+
+if __name__ == '__main__':
+    result = main(sys.argv)
+    if result == 0:
+        sys.stdout.write("# Run this command to configure your shell:\n")
+        sys.stdout.write("# eval $(parseyml %s)\n" % ' '.join(sys.argv[1:]))
+    sys.exit(result)
