@@ -10,7 +10,7 @@
 from __future__ import unicode_literals
 from setuptools import setup, find_packages
 
-__version__ = '0.1.1a3'
+__version__ = '0.1.1b0'
 
 setup(
     name='parseyml',

@@ -2,6 +2,11 @@
 Tool to parse yaml .yml file and export to shell environment
 
 
+| Branch  | Build status                             |
+| ------- | ---------------------------------------- |
+| master  | [![Build Status](https://travis-ci.org/tranvietanh1991/parseyml.svg?branch=master)](https://travis-ci.org/tranvietanh1991/parseyml) |
+| develop | |
+
 ## Installation:
 
 ### via pypi:
