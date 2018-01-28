@@ -48,10 +48,10 @@ def main(argv):
             travel_and_print_env(data, root_key=root_key.strip().upper());
     elif len(args) == 1:  # read yml from pipe line
         root_key = args[0]
-        data = yaml.load(sys.stdin.read())
         if not validate_root_key(root_key):
             sys.stderr.write("invalid root_key example: 'ROOT_KEY'")
             return 1
+        data = yaml.load(sys.stdin.read())
         travel_and_print_env(data, root_key=root_key.strip().upper());
 
     return 0
