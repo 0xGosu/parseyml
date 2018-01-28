@@ -3,19 +3,16 @@ python:
 - '2.6'
 - '2.7'
 stages:
-- name: setup_and_test
-- name: deploy_to_pypi
+- name: test
+- name: deploy
   if: branch = master
 jobs:
   include:
-  - stage: setup_and_test
-    python:
-    - '2.6'
-    - '2.7'
+  - stage: test
     before_script:
     - python setup.py install
     script: pytest
-  - stage: deploy_to_pypi
+  - stage: deploy
     python: '2.7'
     script: echo "deploy to pypi (pip)"
     deploy:
