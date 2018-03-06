@@ -11,7 +11,7 @@ from __future__ import unicode_literals
 from setuptools import setup, find_packages
 import os
 
-with open(os.path.join(os.path.dirname(os.path.abspath(__file__)), 'VERSION')) as f:
+with open(os.path.join(os.path.dirname(os.path.abspath(__file__)), 'parseyml/VERSION')) as f:
     __version__ = f.read()
 
 setup(
