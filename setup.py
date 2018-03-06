@@ -9,8 +9,10 @@
 #
 from __future__ import unicode_literals
 from setuptools import setup, find_packages
+import os
 
-__version__ = '0.1.1b0'
+with open(os.path.join(os.path.dirname(os.path.abspath(__file__)), 'VERSION')) as f:
+    __version__ = f.read()
 
 setup(
     name='parseyml',

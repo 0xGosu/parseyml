@@ -1,0 +1,14 @@
+version: '2.1'
+services:
+  develop:
+    build:
+      context: .
+      dockerfile: Dockerfile-runserver
+    image: posttrade_api:dev_${BUILD_VERSION}
+    command: echo "This service is disabled!"
+  production:
+    build:
+      context: .
+      dockerfile: Dockerfile-runserver
+    image: posttrade_api:${BUILD_VERSION}
+    command: echo "This service is disabled!"

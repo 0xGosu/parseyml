@@ -10,6 +10,44 @@
 from __future__ import unicode_literals
 import os, sys, yaml, re
 
+# Setup YAML parser to check for shell enviroment substituting
+
+ENV_VAR_MATCHER = re.compile(
+    r"""
+        \$\{       # match characters `${` literally
+        ([^}:\s]+) # 1st group: matches any character except `}` or `:`
+        :?         # matches the literal `:` character zero or one times
+        ([^}]+)?   # 2nd group: matches any character except `}`
+        \}         # match character `}` literally
+    """, re.VERBOSE
+)
+IMPLICIT_ENV_VAR_MATCHER = re.compile(
+    r"""
+        .*          # matches any number of any characters
+        \$\{.*\}    # matches any number of any characters
+                    # between `${` and `}` literally
+        .*          # matches any number of any characters
+    """, re.VERBOSE
+)
+
+
+def _replace_env_var(match):
+    env_var, default = match.groups()
+    return os.environ.get(env_var, default)
+
+
+def env_var_constructor(loader, node):
+    raw_value = loader.construct_scalar(node)
+    value = ENV_VAR_MATCHER.sub(_replace_env_var, raw_value)
+    return yaml.safe_load(value)
+
+
+def setup_yaml_parser():
+    yaml.add_constructor('!env_var', env_var_constructor)
+    yaml.add_implicit_resolver('!env_var', IMPLICIT_ENV_VAR_MATCHER)
+
+
+# Main logic
 
 def travel_and_print_env(data, root_key=''):
     if isinstance(data, dict):
@@ -37,6 +75,7 @@ def validate_root_key(root_key):
 
 
 def main(argv):
+    setup_yaml_parser()
     args = argv[1:]
     if len(args) == 2:  # read yml from file
         filePath, root_key = args
@@ -55,6 +94,7 @@ def main(argv):
         travel_and_print_env(data, root_key=root_key.strip().upper());
 
     return 0
+
 
 if __name__ == '__main__':
     result = main(sys.argv)

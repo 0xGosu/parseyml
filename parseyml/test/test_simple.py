@@ -40,3 +40,15 @@ def test_case2():
         assert "export COMPOSE__SERVICES__WEORDER__IMAGE='registry.gitlab.com/tranvietanh1991/weorder:weoder-restapi-v1.2'" in result_stdout
         assert "export COMPOSE__SERVICES__MYSQLDB__ENVIRONMENT__MYSQL_ROOT_PASSWORD='dummy_password'" in result_stdout
         mystdout.close()
+
+
+def test_case3():
+    sys.stdout = mystdout = StringIO()
+    os.environ.setdefault('BUILD_VERSION', '1.2.3')
+    main(['parseyml', os.path.join(BASE_DIR, 'test/test_input/docker-compose.build.yml'), 'COMPOSE'])
+
+    result_stdout = mystdout.getvalue()
+    assert len(result_stdout) > 0
+    assert "export COMPOSE__SERVICES__DEVELOP__IMAGE='posttrade_api:dev_1.2.3'" in result_stdout
+    assert "export COMPOSE__SERVICES__PRODUCTION__IMAGE='posttrade_api:1.2.3'" in result_stdout
+    mystdout.close()
