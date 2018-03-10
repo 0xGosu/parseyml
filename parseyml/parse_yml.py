@@ -48,6 +48,9 @@ def setup_yaml_parser():
 
 
 # Main logic
+def convert_key(key):
+    return key.upper().replace('-', '_')
+
 
 def travel_and_print_env(data, root_key=''):
     if isinstance(data, dict):
@@ -58,7 +61,7 @@ def travel_and_print_env(data, root_key=''):
             if isinstance(item, dict) or isinstance(item, list):
                 travel_and_print_env(item, root_key=cur_key);
             else:
-                sys.stdout.write("export %s='%s'\n" % (cur_key.upper(), item))
+                sys.stdout.write("export %s='%s'\n" % (convert_key(cur_key), item))
     else:
         for i in range(len(data)):
             cur_key = root_key + '_%s_' % i
@@ -66,7 +69,7 @@ def travel_and_print_env(data, root_key=''):
             if isinstance(item, dict) or isinstance(item, list):
                 travel_and_print_env(item, root_key=cur_key);
             else:
-                sys.stdout.write("export %s='%s'\n" % (cur_key.upper(), item))
+                sys.stdout.write("export %s='%s'\n" % (convert_key(cur_key), item))
 
 
 def validate_root_key(root_key):
