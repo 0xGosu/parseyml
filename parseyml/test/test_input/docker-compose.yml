@@ -55,6 +55,12 @@ services:
       - .:/var/www/webapp
     ports:
       - "8000:80"
+    logging:
+      driver: awslogs
+      options:
+        awslogs-region: ap-southeast-1
+        awslogs-group: /aws/ecs/aws.logs
+        awslogs-stream-prefix: nginx
 
 networks:
   frontend:
