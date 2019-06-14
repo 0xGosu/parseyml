@@ -27,7 +27,7 @@ setup(
     scripts=['bin/parseyml'],
     include_package_data=True,
     install_requires=[
-        "PyYAML>=3.11",
+        "PyYAML>=3.11,<=3.13",
     ],
     python_requires='>=2.6, <3',
     keywords=['yaml', 'parse', 'parseyml', 'parse-yml', 'yml', 'export', 'shell'],  # arbitrary keywords
