@@ -8,7 +8,7 @@
 #  Copyright (c) 2018 parseyml. All rights reserved.
 #
 from __future__ import unicode_literals
-from setuptools import setup, find_packages
+from setuptools import setup
 import os
 
 with open(os.path.join(os.path.dirname(os.path.abspath(__file__)), 'parseyml/VERSION')) as f:
@@ -23,7 +23,7 @@ setup(
     license="MIT",
     url='https://github.com/tranvietanh1991/parseyml',  # use the URL to the github repo
     download_url='https://github.com/tranvietanh1991/parseyml/archive/master.zip',  # source code download
-    packages=find_packages(exclude=['*.tests', '*.tests.*']),
+    packages=['parseyml'],
     scripts=['bin/parseyml'],
     include_package_data=True,
     install_requires=[
