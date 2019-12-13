@@ -32,3 +32,13 @@ Another usage is parse yaml file via pipeline
 `cat appspec.yml | parseyml APPSPEC`
 
 `eval $(cat appspec.yml | parseyml APPSPEC)`
+
+## Shell enviroment variable subsitution:
+
+Shell enviroment variable can be used in the .yml file as follow: config.yml
+``` 
+AMQP_URI: pyamqp://${PYAMQP_URL:rbmqu:rbmqp@rabbitamqp:5672/local}
+WEB_SERVER_ADDRESS: '${HOST}:${PORT}'
+```
+`eval $(cat config.yml | parseyml CONFIG)` will give you value of AMQP_URI as `CONFIG__AMQP_URI`
+Note: `${ENV_KEY_NAME:ENV_DEFAULT_VALUE}`

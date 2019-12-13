@@ -7,6 +7,10 @@ stages:
 python:
   - "2.6"
   - "2.7"
+  - "3.5"
+  - "3.6"
+  - "3.7"
+  - "3.8"
 # test stage
 before_script:
 - python setup.py install
