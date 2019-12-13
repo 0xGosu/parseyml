@@ -8,7 +8,7 @@
 #  Copyright (c) 2018 parseyml. All rights reserved.
 #
 from __future__ import unicode_literals
-from setuptools import setup, find_packages
+from setuptools import setup
 import os
 
 with open(os.path.join(os.path.dirname(os.path.abspath(__file__)), 'parseyml/VERSION')) as f:
@@ -23,13 +23,13 @@ setup(
     license="MIT",
     url='https://github.com/tranvietanh1991/parseyml',  # use the URL to the github repo
     download_url='https://github.com/tranvietanh1991/parseyml/archive/master.zip',  # source code download
-    packages=find_packages(exclude=['*.tests', '*.tests.*']),
+    packages=['parseyml'],
     scripts=['bin/parseyml'],
     include_package_data=True,
     install_requires=[
-        "PyYAML>=3.11,<=3.13",
+        "PyYAML>=4.2b1",
     ],
-    python_requires='>=2.6, <3',
+    python_requires='>=2.7',
     keywords=['yaml', 'parse', 'parseyml', 'parse-yml', 'yml', 'export', 'shell'],  # arbitrary keywords
     classifiers=[
         "Development Status :: 4 - Beta",
@@ -40,9 +40,12 @@ setup(
         "License :: OSI Approved :: MIT License",
         "Operating System :: OS Independent",
         "Programming Language :: Python :: 2",
-        "Programming Language :: Python :: 2.6",
         "Programming Language :: Python :: 2.7",
-        # "Programming Language :: Python :: 3",
+        'Programming Language :: Python :: 3',
+        'Programming Language :: Python :: 3.5',
+        'Programming Language :: Python :: 3.6',
+        'Programming Language :: Python :: 3.7',
+        'Programming Language :: Python :: 3.8',
         "Topic :: Software Development :: Libraries :: Python Modules",
     ],
 )
