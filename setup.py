@@ -29,7 +29,7 @@ setup(
     install_requires=[
         "PyYAML>=4.2b1",
     ],
-    python_requires='>=2.6',
+    python_requires='>=2.7',
     keywords=['yaml', 'parse', 'parseyml', 'parse-yml', 'yml', 'export', 'shell'],  # arbitrary keywords
     classifiers=[
         "Development Status :: 4 - Beta",
@@ -40,7 +40,6 @@ setup(
         "License :: OSI Approved :: MIT License",
         "Operating System :: OS Independent",
         "Programming Language :: Python :: 2",
-        "Programming Language :: Python :: 2.6",
         "Programming Language :: Python :: 2.7",
         'Programming Language :: Python :: 3',
         'Programming Language :: Python :: 3.5',
