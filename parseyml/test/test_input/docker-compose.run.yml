@@ -1,0 +1,14 @@
+version: '2.1'
+services:
+  develop:
+    build:
+      context: .
+      dockerfile: Dockerfile-runserver
+    image: ${DOCKER_REPO}:dev_${BUILD_VERSION}
+    command: echo "This service is disabled!"
+  production:
+    build:
+      context: .
+      dockerfile: Dockerfile-runserver
+    image: ${DOCKER_REPO}:${BUILD_VERSION}
+    command: echo "This service is disabled!"
