@@ -8,6 +8,7 @@
 #  Copyright (c) 2018 parseyml. All rights reserved.
 #
 from __future__ import unicode_literals
+
 try:
     from cStringIO import StringIO
 except ImportError:
@@ -17,6 +18,7 @@ import sys
 import re
 from parseyml import main
 import os
+import json
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
@@ -48,7 +50,7 @@ def test_case2():
 
 def test_case3():
     sys.stdout = mystdout = StringIO()
-    os.environ.setdefault('BUILD_VERSION', '1.2.3')
+    os.environ['BUILD_VERSION'] = '1.2.3'
     main(['parseyml', os.path.join(BASE_DIR, 'test/test_input/docker-compose.build.yml'), 'COMPOSE'])
 
     result_stdout = mystdout.getvalue()
@@ -56,3 +58,37 @@ def test_case3():
     assert "export COMPOSE__SERVICES__DEVELOP__IMAGE='posttrade_api:dev_1.2.3'" in result_stdout
     assert "export COMPOSE__SERVICES__PRODUCTION__IMAGE='posttrade_api:1.2.3'" in result_stdout
     mystdout.close()
+
+
+def test_case4():
+    os.environ['BUILD_VERSION'] = '1.2.3'
+    result = main(['parseyml', os.path.join(BASE_DIR, 'test/test_input/docker-compose.build.yml'), 'json'])
+
+    assert len(result) > 0
+    data = json.loads(result)
+    assert data['services']['develop']['image'] == "posttrade_api:dev_1.2.3"
+    assert data['services']['production']['image'] == "posttrade_api:1.2.3"
+
+
+def test_case5():
+    sys.stdout = mystdout = StringIO()
+    os.environ.pop('BUILD_VERSION')
+    main(['parseyml', os.path.join(BASE_DIR, 'test/test_input/docker-compose.run.env'),
+          os.path.join(BASE_DIR, 'test/test_input/docker-compose.run.yml'), 'COMPOSE'])
+
+    result_stdout = mystdout.getvalue()
+    assert len(result_stdout) > 0
+    assert "export COMPOSE__SERVICES__DEVELOP__IMAGE='posttrade_api:dev_1.2.0'" in result_stdout
+    assert "export COMPOSE__SERVICES__PRODUCTION__IMAGE='posttrade_api:1.2.0'" in result_stdout
+    mystdout.close()
+
+
+def test_case6():
+    os.environ['BUILD_VERSION'] = '1.2.3'
+    result = main(['parseyml', os.path.join(BASE_DIR, 'test/test_input/docker-compose.run.env'),
+                   os.path.join(BASE_DIR, 'test/test_input/docker-compose.run.yml'), 'json'])
+
+    assert len(result) > 0
+    data = json.loads(result)
+    assert data['services']['develop']['image'] == "posttrade_api:dev_1.2.3"
+    assert data['services']['production']['image'] == "posttrade_api:1.2.3"

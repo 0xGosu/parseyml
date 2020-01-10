@@ -24,14 +24,22 @@ Run this command on your shell:
 
 All of docker-compose file content will be transcript to bash export script
 
-Or run this command to excute export script immediately
+To allow reading default enviroment file use this command:
+`parseyml .env docker-compose.yml COMPOSE`
+
+Then run this command to excute export script immediately
 `eval $(parseyml docker-compose.yml COMPOSE)`
+`eval $(parseyml .env docker-compose.yml COMPOSE)`
 
 Another usage is parse yaml file via pipeline
 
 `cat appspec.yml | parseyml APPSPEC`
 
 `eval $(cat appspec.yml | parseyml APPSPEC)`
+
+There is also an option to export yaml data to json via this command:
+
+`parseyml .env docker-compose.yml json`
 
 ## Shell enviroment variable subsitution:
 

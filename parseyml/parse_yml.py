@@ -8,7 +8,8 @@
 #  Copyright (c) 2016 parseyml. All rights reserved.
 #
 from __future__ import unicode_literals
-import os, sys, yaml, re
+import os, sys, yaml, re, json
+from dotenv import load_dotenv
 
 # Setup YAML parser to check for shell enviroment substituting
 
@@ -80,20 +81,32 @@ def validate_root_key(root_key):
 def main(argv):
     setup_yaml_parser()
     args = argv[1:]
-    if len(args) == 2:  # read yml from file
+    if len(args) == 3:  # read yml from file with .env default
+        envFile, filePath, root_key = args
+        load_dotenv(envFile)
+        with open(filePath) as f:
+            data = yaml.full_load(f.read());
+    elif len(args) == 2:  # read yml from file
         filePath, root_key = args
         with open(filePath) as f:
-            data = yaml.load(f);
-            if not validate_root_key(root_key):
-                sys.stderr.write("invalid root_key example: 'ROOT_KEY'")
-                return 1
-            travel_and_print_env(data, root_key=root_key.strip().upper());
+            data = yaml.full_load(f.read());
     elif len(args) == 1:  # read yml from pipe line
         root_key = args[0]
         if not validate_root_key(root_key):
             sys.stderr.write("invalid root_key example: 'ROOT_KEY'")
             return 1
-        data = yaml.load(sys.stdin.read())
+        data = yaml.full_load(sys.stdin.read())
+    else:
+        sys.stderr.write("Too many argument")
+        return 1
+
+    if not validate_root_key(root_key):
+        sys.stderr.write("invalid root_key example: 'ROOT_KEY'")
+        return 1
+
+    if root_key == 'json':
+        return json.dumps(data)
+    else:
         travel_and_print_env(data, root_key=root_key.strip().upper());
 
     return 0
@@ -104,4 +117,7 @@ if __name__ == '__main__':
     if result == 0:
         sys.stdout.write("# Run this command to configure your shell:\n")
         sys.stdout.write("# eval $(python %s)\n" % ' '.join(sys.argv))
+    elif isinstance(result, basestring):
+        sys.stdout.write(result)
+        sys.exit(0)
     sys.exit(result)

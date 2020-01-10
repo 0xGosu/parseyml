@@ -1,2 +1,4 @@
 PyYAML==5.*
 pytest
+click==7.*
+python-dotenv==0.10.*
